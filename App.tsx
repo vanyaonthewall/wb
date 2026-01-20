@@ -463,10 +463,10 @@ function App() {
 
     // Helper for desktop coloring "Completed" steps
     const getDesktopStepColorClass = (isActive: boolean, isCompleted: boolean) => {
-      // Apply .btn-ios-style for the active step
-      if (isActive) return 'btn-ios-style lg:shadow-sm'; 
-      if (isCompleted) return 'lg:bg-emerald-500 lg:text-white lg:shadow-sm'; 
-      return 'lg:bg-zinc-100 lg:text-zinc-400 lg:border lg:border-transparent';
+      // STATIC STYLES: No button effects, plain colors
+      if (isActive) return 'bg-zinc-900 text-white'; 
+      if (isCompleted) return 'bg-emerald-500 text-white'; 
+      return 'bg-zinc-100 text-zinc-400';
     };
 
     const isStep1Completed = currentStep > 1 || showResults;
@@ -481,14 +481,15 @@ function App() {
 
     let containerClasses = "";
     
+    // UPDATED WIDTH to 480px
     if (showResults) {
       if (isMobileFiltersOpen) {
-        containerClasses = "fixed inset-0 z-50 bg-white flex flex-col lg:static lg:w-[440px] lg:flex-shrink-0 lg:border-r lg:border-zinc-200 lg:h-screen lg:shadow-xl lg:shadow-zinc-200/50";
+        containerClasses = "fixed inset-0 z-50 bg-white flex flex-col lg:static lg:w-[480px] lg:flex-shrink-0 lg:border-r lg:border-zinc-200 lg:h-screen lg:shadow-xl lg:shadow-zinc-200/50";
       } else {
-        containerClasses = "hidden lg:flex lg:w-[440px] lg:flex-shrink-0 lg:bg-white lg:border-r lg:border-zinc-200 lg:h-screen lg:flex-col lg:z-20 lg:shadow-xl lg:shadow-zinc-200/50";
+        containerClasses = "hidden lg:flex lg:w-[480px] lg:flex-shrink-0 lg:bg-white lg:border-r lg:border-zinc-200 lg:h-screen lg:flex-col lg:z-20 lg:shadow-xl lg:shadow-zinc-200/50";
       }
     } else {
-      containerClasses = "w-full bg-white border-t border-zinc-200 flex flex-col order-2 z-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] lg:shadow-xl lg:shadow-zinc-200/50 lg:w-[440px] lg:flex-shrink-0 lg:border-t-0 lg:border-r lg:h-full lg:order-1 lg:static";
+      containerClasses = "w-full bg-white border-t border-zinc-200 flex flex-col order-2 z-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] lg:shadow-xl lg:shadow-zinc-200/50 lg:w-[480px] lg:flex-shrink-0 lg:border-t-0 lg:border-r lg:h-full lg:order-1 lg:static";
     }
 
     const renderMobileStepper = () => {
@@ -578,7 +579,8 @@ function App() {
                 className={`flex items-center justify-between p-[18px] ${!showResults && currentStep > 1 ? 'cursor-pointer hover:bg-zinc-50/50' : 'cursor-default'}`}
               >
                 <div className="flex items-center gap-4">
-                    <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold transition-colors ${getDesktopStepColorClass(isStep1Open, isStep1Completed)}`}>
+                    {/* STEP INDICATOR - NOW STATIC */}
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold flex-shrink-0 select-none ${getDesktopStepColorClass(isStep1Open, isStep1Completed)}`}>
                       {(isStep1Completed && !isStep1Open) ? <Check size={14} strokeWidth={3} /> : '1'}
                     </div>
                     <div className="flex flex-col justify-center">
@@ -605,7 +607,8 @@ function App() {
                 className={`flex items-center justify-between p-[18px] ${!showResults && currentStep > 2 ? 'cursor-pointer hover:bg-zinc-50/50' : 'cursor-default'}`}
               >
                 <div className="flex items-center gap-4">
-                    <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold transition-colors ${getDesktopStepColorClass(isStep2Open, isStep2Completed)}`}>
+                    {/* STEP INDICATOR - NOW STATIC */}
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold flex-shrink-0 select-none ${getDesktopStepColorClass(isStep2Open, isStep2Completed)}`}>
                       {(isStep2Completed && !isStep2Open) ? <Check size={14} strokeWidth={3} /> : '2'}
                     </div>
                     <div className="flex flex-col justify-center">
@@ -628,7 +631,8 @@ function App() {
             {/* Step 3: Doors */}
             <div className={`border rounded-xl transition-all duration-300 overflow-hidden ${isStep3Open ? 'bg-white border-zinc-200' : ''} ${showResults ? 'bg-white border-zinc-200' : ''}`}>
               <div className="flex items-center gap-4 p-[18px]">
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold transition-colors ${getDesktopStepColorClass(isStep3Open, false)}`}>
+                  {/* STEP INDICATOR - NOW STATIC */}
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold flex-shrink-0 select-none ${getDesktopStepColorClass(isStep3Open, false)}`}>
                     3
                   </div>
                   <h3 className={`text-lg font-semibold tracking-tight leading-none ${isStep3Open ? 'text-zinc-900' : 'text-muted-foreground'}`}>
