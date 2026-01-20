@@ -208,7 +208,19 @@ function App() {
     setIsMobileFiltersOpen(false); // Close mobile filters if open
   };
 
-  const handleReset = () => {
+  // Reset logic 1: Reset filters only (keep user in results view)
+  const handleResetFilters = () => {
+    setFilters({
+      areaRange: [MIN_AREA, MAX_AREA],
+      shape: null,
+      entry: null,
+      storage: null,
+    });
+    // Intentionally NOT changing showResults or currentStep here
+  };
+
+  // Reset logic 2: Reset everything (go back to start)
+  const handleFullReset = () => {
     setFilters({
       areaRange: [MIN_AREA, MAX_AREA],
       shape: null,
@@ -414,7 +426,7 @@ function App() {
         <header className="shrink-0 bg-white border-b border-zinc-200 h-16 lg:h-20 flex items-center px-4 lg:px-10 z-30 sticky top-0 shadow-sm">
           <button 
             onClick={handleBackFromDetail}
-            className="mr-4 lg:mr-6 flex items-center gap-2 text-zinc-500 hover:text-zinc-900 transition-colors font-medium text-sm lg:text-base"
+            className="mr-4 lg:mr-6 flex items-center gap-2 text-zinc-500 hover:text-zinc-900 transition-colors font-medium text-sm lg:text-base whitespace-nowrap"
           >
             <ChevronLeft size={20} />
             Назад
@@ -505,7 +517,7 @@ function App() {
                    isActive ? 'text-zinc-900' : (isCompleted ? 'text-zinc-500' : 'text-zinc-300')
                  }`}
                >
-                 <span className="relative z-10 flex items-center justify-center gap-1.5">
+                 <span className="relative z-10 flex items-center justify-center gap-1.5 whitespace-nowrap">
                     {isCompleted && <Check size={14} strokeWidth={3} className="text-emerald-500" />}
                     {step.id}. {step.label}
                  </span>
@@ -528,8 +540,8 @@ function App() {
         {/* Header - Desktop Only */}
         <div className={`shrink-0 flex items-center justify-between px-6 border-b border-zinc-100 ${showResults && isMobileFiltersOpen ? 'h-16' : 'hidden lg:flex lg:h-20 lg:px-8'}`}>
           <span 
-            onClick={handleReset} // Reset on click
-            className="font-semibold text-xl lg:text-2xl tracking-tight text-zinc-900 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={handleFullReset} // CHANGED: Reset App completely
+            className="font-semibold text-xl lg:text-2xl tracking-tight text-zinc-900 cursor-pointer hover:opacity-80 transition-opacity whitespace-nowrap"
           >
              {showResults && isMobileFiltersOpen ? 'Фильтры' : 'Типовой ПВЗ'}
           </span>
@@ -571,7 +583,7 @@ function App() {
                     </div>
                     <div className="flex flex-col justify-center">
                       <h3 className={`text-lg font-semibold tracking-tight leading-none ${!showResults && currentStep > 1 ? 'text-muted-foreground' : 'text-zinc-900'}`}>Площадь</h3>
-                       <div className="text-sm font-medium text-zinc-500 mt-1">
+                       <div className="text-sm font-medium text-zinc-500 mt-1 whitespace-nowrap">
                           {(!showResults && currentStep > 1) ? `${filters.areaRange[0]} — ${filters.areaRange[1]} м²` : ''}
                        </div>
                     </div>
@@ -643,7 +655,7 @@ function App() {
               onClick={handleShowResults}
               className="flex justify-center -mt-2 mb-1 lg:mb-2 min-h-[20px] w-full group cursor-pointer hover:opacity-80 transition-opacity"
             >
-              <span className="text-sm lg:text-base font-medium text-zinc-500 group-hover:text-zinc-800 transition-colors underline decoration-zinc-300 underline-offset-4">
+              <span className="text-sm lg:text-base font-medium text-zinc-500 group-hover:text-zinc-800 transition-colors underline decoration-zinc-300 underline-offset-4 whitespace-nowrap">
                 {foundText}
               </span>
             </button>
@@ -655,7 +667,7 @@ function App() {
                {currentStep > 1 && (
                  <button 
                   onClick={handlePrevStep}
-                  className="flex-1 py-3 lg:py-3.5 rounded-lg border border-zinc-200 text-zinc-700 font-medium hover:bg-zinc-50 transition-colors text-sm lg:text-base"
+                  className="flex-1 py-3 lg:py-3.5 rounded-lg border border-zinc-200 text-zinc-700 font-medium hover:bg-zinc-50 transition-colors text-sm lg:text-base whitespace-nowrap"
                  >
                    Назад
                  </button>
@@ -665,7 +677,7 @@ function App() {
                <button 
                 onClick={currentStep === 3 ? handleShowResults : handleNextStep}
                 disabled={currentStep === 3 && (!filters.entry || !filters.storage)}
-                className="flex-1 py-3 lg:py-3.5 btn-ios-style rounded-lg shadow hover:opacity-90 transition-all flex justify-center items-center gap-2 font-medium text-sm lg:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-3 lg:py-3.5 btn-ios-style rounded-lg shadow hover:opacity-90 transition-all flex justify-center items-center gap-2 font-medium text-sm lg:text-base disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                >
                  {currentStep === 3 ? (
                    <>
@@ -686,8 +698,8 @@ function App() {
           ) : (
             // Results Mode Footer
             <button 
-              onClick={handleReset}
-              className="w-full py-3 lg:py-3.5 border border-zinc-200 text-zinc-700 rounded-lg hover:bg-zinc-50 transition-colors flex items-center justify-center gap-2 font-medium text-sm lg:text-base"
+              onClick={handleResetFilters} // CHANGED: Call specific filter reset, stay in results
+              className="w-full py-3 lg:py-3.5 border border-zinc-200 text-zinc-700 rounded-lg hover:bg-zinc-50 transition-colors flex items-center justify-center gap-2 font-medium text-sm lg:text-base whitespace-nowrap"
             >
               <RefreshCcw size={16} /> Сбросить фильтры
             </button>
@@ -704,7 +716,7 @@ function App() {
     if (showResults) {
       // Sorting button styles
       const containerClass = "flex p-1 bg-zinc-100 rounded-lg gap-1";
-      const itemBase = "px-2 lg:px-3 py-1.5 rounded-md text-xs lg:text-sm font-medium transition-all flex items-center justify-center gap-1.5 lg:gap-2";
+      const itemBase = "px-2 lg:px-3 py-1.5 rounded-md text-xs lg:text-sm font-medium transition-all flex items-center justify-center gap-1.5 lg:gap-2 whitespace-nowrap";
       const itemActive = "bg-white text-zinc-900 shadow-sm";
       const itemInactive = "text-zinc-500 hover:text-zinc-900 hover:bg-white/50";
 
@@ -748,7 +760,7 @@ function App() {
 
                 {/* Sort - hidden on very small screens if needed, or compact */}
                 <div className="hidden md:flex items-center gap-3">
-                  <span className="text-sm text-muted-foreground font-medium mr-1">Сортировка:</span>
+                  <span className="text-sm text-muted-foreground font-medium mr-1 whitespace-nowrap">Сортировка:</span>
                   <div className={containerClass}>
                     <button 
                       onClick={() => handleSortChange('relevance')}
